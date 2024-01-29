@@ -1,22 +1,31 @@
 pipeline {
     agent any
 
-    stages {
+       stages {
         stage('Instalación de Dependencias') {
             steps {
-                sh 'npm install'
+                script {
+                    def result = sh(script: 'npm install', returnStatus: true)
+                    echo "Resultado de npm install: ${result == 0}"
+                }
             }
         }
 
         stage('Construyendo la App') {
             steps {
-                sh 'npm run ng build'
+                script {
+                    def result = sh(script: 'npm run ng build', returnStatus: true)
+                    echo "Resultado de npm run ng build: ${result == 0}"
+                }
             }
         }
 
         stage('Moviendo la carpeta para su ejecución') {
             steps {
-                sh 'cp -r $WORKSPACE/dist $HOME/Work/itsmqet/nginx'
+                script {
+                    def result = sh(script: 'cp -r $WORKSPACE/dist $HOME/Work/itsmqet/nginx', returnStatus: true)
+                    echo "Resultado de cp: ${result == 0}"
+                }
             }
         }
     }
